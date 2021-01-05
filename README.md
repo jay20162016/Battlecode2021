@@ -1,39 +1,39 @@
-<<<<<<< HEAD
-# Battlecode2021
-=======
-# Battlecode 2021 Scaffold
+# BattleCode 2021: Campaign
+This is the [Battlecode 2021](https://battlecode.org) main website
+The [Specifications](http://2021.battlecode.org/specs/specs.md.html) are here
+The [Java Documentation](http://2021.battlecode.org/javadoc/index.html) is here
 
-This is the Battlecode 2021 scaffold, containing an `examplefuncsplayer`. Read https://2021.battlecode.org/getting-started!
+# Overview
+Battlecode is a real-time strategy game, for which you will write an AI player. Your AI player will need to strategically manage a robot army and control how your robots work together to defeat the enemy team. As a contestant, you will learn to use artificial intelligence, pathfinding, distributed algorithms, and communications to make your player as competitive as possible.
 
-### Project Structure
+Teams are given the Battlecode software and a specification of the game rules in early January. Throughout the month, you will refine your player, and compete in scrimmages and tournaments against other teams. During these tournaments, the autonomous players are pitted against each other in a dramatic head-to-head fashion. At the end of the month, the Final Tournament is played out in front of a live audience at MIT, with the top teams receiving cash prizes. The total prize pool is over $15,000.
 
-- `README.md`
-    This file.
-- `build.gradle`
-    The Gradle build file used to build and run players.
-- `src/`
-    Player source code.
-- `test/`
-    Player test code.
-- `client/`
-    Contains the client. The proper executable can be found in this folder (don't move this!)
-- `build/`
-    Contains compiled player code and other artifacts of the build process. Can be safely ignored.
-- `matches/`
-    The output folder for match files.
-- `maps/`
-    The default folder for custom maps.
-- `gradlew`, `gradlew.bat`
-    The Unix (OS X/Linux) and Windows versions, respectively, of the Gradle wrapper. These are nifty scripts that you can execute in a terminal to run the Gradle build tasks of this project. If you aren't planning to do command line development, these can be safely ignored.
-- `gradle/`
-    Contains files used by the Gradle wrapper scripts. Can be safely ignored.
+## Units
 
+**Units** are robots which can move; these will be your team's primary means of combat. Different types of units have different special abilities, and success in the election will depend on how your team uses these abilities to your advantage.
 
-### Useful Commands
+You are able to create units by transferring part of your influence to the new unit. The influence you spend is an integer parameter C, which you may choose for each new unit you create.
 
-- `./gradlew run`
-    Runs a game with the settings in gradle.properties
-- `./gradlew update`
-    Update to the newest version! Run every so often
+The **conviction** of a unit describes how loyal it is to your party; by transferring more influence, you will obtain units that have greater conviction and are therefore more loyal.
 
->>>>>>> 426d02b6e3a4d78136386dd683775e0d8a26da37
+**Buildings** are immobile robots; the only type of available building is Enlightenment Centers.
+
+**Conclusion:** ***Conviction*** is a robot's health (if it falls below 0 then your robot is converted to the other team), and ***Influence*** is the main currency. You can choose the amount of influence spent on a robot, *higher influence = high conviction*.
+
+![Chart](img/RobotsData.PNG)
+
+Politician            | Slanderer | Muckraker
+:-------------------------:|:-------------------------:|:-------------------------:
+![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)
+
+- **Politician**: 
+**Conclusion**: 
+
+- **Slanderer**: 
+**Conclusion**
+
+- **Muckraker**: 
+**Conclusion**
+
+- **Enlightenment Centers**:
+**Conclusion**
