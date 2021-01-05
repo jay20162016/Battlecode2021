@@ -26,11 +26,11 @@ Politician            | Slanderer | Muckraker
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)
 
-**Politician**: 
+**Politician**: Units that can transfer conviction to other units with cost of life and 10 conviction. His remaining conviction will divide into equal pieces and then transer to nearby units (if it's more than 10, otherwise, it will be a waste). Enemy units will lose conviction while our units gaining conviction.
 
-- **Conclusion**: 
+- **Conclusion**:  
 
-**Slanderer**: Units that can only move. Will bring extra influence after 50 rounds and turn into politician after 300 rounds.
+**Slanderer**: Units that can only move. Will bring extra influence after 50 rounds according to his influence and turn into politician after 300 rounds.
 
 - **Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians and muckrakers.
 
