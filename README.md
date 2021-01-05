@@ -28,7 +28,7 @@ Politician            | Slanderer | Muckraker
 
 **Politician**: Units that can transfer conviction to other units with cost of life and 10 conviction. His remaining conviction will divide into equal pieces and then transer to nearby units (if it's more than 10, otherwise, it will be a waste). Enemy units will lose conviction while our units gaining conviction.
 
-- **Conclusion**:  
+- **Conclusion**:  Aggressive action: Go and occupy other centers, give them as much conviction as we can and don't worried about their loyalty - enemies have to cost same amount of conviction to kill them. Defensive action(not recommended): Stay around the Enlightenment center in order to make sure the center won't be occupied, transfering conviction between two centers.
 
 **Slanderer**: Units that can only move. Will bring extra influence after 50 rounds according to his influence and turn into politician after 300 rounds.
 
