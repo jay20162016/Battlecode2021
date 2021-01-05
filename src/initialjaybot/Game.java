@@ -1,7 +1,7 @@
 package initialjaybot;
 import battlecode.common.*;
 
-public strictfp class RobotPlayer {
+public strictfp class Game {
     static final RobotType[] spawnableRobot = {
         RobotType.POLITICIAN,
         RobotType.SLANDERER,
@@ -23,31 +23,31 @@ public strictfp class RobotPlayer {
       return directions[(int) (Math.random() * directions.length)];
     }
 
-    static Direction randomDirection(int n, int ne, int e, int se, int s, int sw, int w, int nw) {
-        int random = Math.random();
+    static Direction randomDirection(double n, double ne, double e, double se, double s, double sw, double w, double nw) {
+        double random = Math.random();
 
         if (random < n) {
           return Direction.NORTH;
         }
-        else if (random < ne) {
+        else if (random < n+ne) {
           return Direction.NORTHEAST;
         }
-        else if (random < e) {
+        else if (random < n+ne+e) {
           return Direction.EAST;
         }
-        else if (random < se) {
+        else if (random < n+ne+e+se) {
           return Direction.SOUTHEAST;
         }
-        else if (random < s) {
+        else if (random < n+ne+e+se+s) {
           return Direction.SOUTH;
         }
-        else if (random < sw) {
+        else if (random < n+ne+e+se+s+sw) {
           return Direction.SOUTHWEST;
         }
-        else if (random < w) {
+        else if (random < n+ne+e+se+s+sw+w) {
           return Direction.WEST;
         }
-        else if (random < nw) {
+        else if (random < n+ne+e+se+s+sw+w+nw) {
           return Direction.NORTHWEST;
         }
         else {
@@ -59,16 +59,16 @@ public strictfp class RobotPlayer {
        return spawnableRobot[(int) (Math.random() * spawnableRobot.length)];
     }
 
-    static RobotType randomSpawnableRobotType(int politician, int slanderer, int muckraker) {
-        int random = Math.random();
+    static RobotType randomSpawnableRobotType(double politician, double slanderer, double muckraker) {
+        double random = Math.random();
 
         if (random < politician) {
           return RobotType.POLITICIAN;
         }
-        else if (random < slanderer) {
-          return RobotType.SLANDER;
+        else if (random < politician+slanderer) {
+          return RobotType.SLANDERER;
         }
-        else if (random < muckraker) {
+        else if (random < politician+slanderer+muckraker) {
           return RobotType.MUCKRAKER;
         }
         else {
@@ -77,13 +77,16 @@ public strictfp class RobotPlayer {
     }
 
     static boolean tryMove(RobotController rc, Direction dir) throws GameActionException {
-        System.out.println("Move " + dir +
-                          "; Ready" + rc.isReady() +
-                          "; Cooldown" + rc.getCooldownTurns() +
-                          "; Can Move" + rc.canMove(dir));
-
         if (rc.canMove(dir)) {
             rc.move(dir);
+            return true;
+        } else return false;
+
+    }
+
+    static boolean tryBuild(RobotController rc, RobotType toBuild, Direction dir, int influence) throws GameActionException {
+        if (rc.canBuildRobot(toBuild, dir, influence)) {
+            rc.buildRobot(toBuild, dir, influence);
             return true;
         } else return false;
 
