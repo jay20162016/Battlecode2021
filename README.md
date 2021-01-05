@@ -12,7 +12,7 @@ Teams are given the Battlecode software and a specification of the game rules in
 
 
 
-[Chart](img/RobotsData.PNG)
+![Chart](img/RobotsData.PNG)
 
 Politician            | Slanderer | Muckraker
 :-------------------------:|:-------------------------:|:-------------------------:
