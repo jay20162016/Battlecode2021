@@ -18,7 +18,7 @@ The **conviction** of a unit describes how loyal it is to your party; by transfe
 
 **Buildings** are immobile robots; the only type of available building is Enlightenment Centers.
 
-**Conclusion:** ***Conviction*** is a robot's health (if it falls below 0 then your robot is converted to the other team), and ***Influence*** is the main currency. You can choose the amount of influence spent on a robot, *higher influence = high conviction*.
+**Conclusion:** ***Conviction*** is a robot's health (if it falls below 0 then your robot is died or converted to the other team), and ***Influence*** is the main currency. You can choose the amount of influence spent on a robot, *higher influence = high conviction*.
 
 ![Chart](img/RobotsData.PNG)
 
@@ -26,16 +26,18 @@ Politician            | Slanderer | Muckraker
 :-------------------------:|:-------------------------:|:-------------------------:
 ![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)
 
-- **Politician**: 
-**Conclusion**: 
+**Politician**: 
 
-- **Slanderer**: Units that can only move. Will bring extra influence after 50 rounds and turn into politician after 300 rounds.
+- **Conclusion**: 
 
-**Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians and muckrakers.
+**Slanderer**: Units that can only move. Will bring extra influence after 50 rounds and turn into politician after 300 rounds.
 
-- **Muckraker**: Units that can kill an enemy's slanderer by 10 conviction and increase effect of our politicians' speeches in 50 rounds. The more influence the killed slanderer has, the more effect will increase.
+- **Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians and muckrakers.
 
-**Conclusion**:
+**Muckraker**: Units that can kill an enemy's slanderer by 10 conviction and increase effect of our politicians' speeches in 50 rounds. The more influence the killed slanderer has, the more effect will increase.
 
-- **Enlightenment Centers**:
-**Conclusion**
+- **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0!
+
+**Enlightenment Centers**:
+
+- **Conclusion**
