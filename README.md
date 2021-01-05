@@ -41,3 +41,9 @@ Politician            | Slanderer | Muckraker
 **Enlightenment Centers**: Buildings that can bid for votes and create units, at least 2 for each game and may increasing with map size. Initial enlightenment centers have 150 influence and others have a random amount of influence between 50 and 500. Each center will gain celi(0.2\*sqrt(t)) each round, while celi means round up and t represents round number.
 
 - **Conclusion**: Occupying as much centers as we can!! Enlightenment center is the only way we can gain influence from!
+
+## Actions
+
+For each units, **actions** includes movement and their abilities. Each action except passive abilities incurs a **cooldown penalty**, and robots can only perform actions when their **cooldown** is less than 1.
+
+After performing an action, the robot's cooldown will increase by `base cooldown value` divide by `passability of current map square`. Different kinds of robot have different base cooldown value, and each tile has a passability which is a real number between 0.1 and 1.0.
