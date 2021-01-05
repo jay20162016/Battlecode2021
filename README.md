@@ -30,10 +30,12 @@ Politician            | Slanderer | Muckraker
 **Conclusion**: 
 
 - **Slanderer**: Units that can only move. Will bring extra influence after 50 rounds and turn into politician after 300 rounds.
+
 **Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians and muckrakers.
 
-- **Muckraker**: 
-**Conclusion**
+- **Muckraker**: Units that can kill an enemy's slanderer by 10 conviction and increase effect of our politicians' speeches in 50 rounds. The more influence the killed slanderer has, the more effect will increase.
+
+**Conclusion**:
 
 - **Enlightenment Centers**:
 **Conclusion**
