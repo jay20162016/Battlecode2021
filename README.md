@@ -10,7 +10,7 @@ Teams are given the Battlecode software and a specification of the game rules in
 
 ## Units
 
-Robots in Battlecode move and fight. Miners and landscapers move on the ground, so they can only move to adjacent tiles of similar height. Drones fly, so they can quickly traverse treacherous terrain. If a robot moves into water (or its location gets flooded), it dies. The robots for Battlecode 2020 were:
+
 
 [Chart](img/RobotsData.PNG)
 
