@@ -29,14 +29,12 @@ public strictfp class RobotPlayer {
             }
         }
 
-        System.out.println("I'm a " + rc.getType() + " and I just got created!");
         while (true) {
             turnCount += 1;
             // Try/catch blocks stop unhandled exceptions, which cause your robot to freeze
             try {
                 // Here, we've separated the controls into a different method for each RobotType.
                 // You may rewrite this into your own control structure if you wish.
-                System.out.println("I'm a " + rc.getType() + "! Location " + rc.getLocation());
                 switch (rc.getType()) {
                     case ENLIGHTENMENT_CENTER: runEnlightenmentCenter(); break;
                     case POLITICIAN:           runPolitician();          break;
@@ -55,13 +53,15 @@ public strictfp class RobotPlayer {
     }
 
     static void runEnlightenmentCenter() throws GameActionException {
-        RobotType toBuild = Game.randomSpawnableRobotType(/*0.*/2, 0.2, 0.6);
+      System.out.println(rc.getInfluence());
+      System.out.println(rc.getConviction());
+        RobotType toBuild = Game.randomSpawnableRobotType(0.2, 0.4, 0.4);
         int influence = 1;
         if (toBuild == RobotType.POLITICIAN) {
           influence = 200;
         }
         else if (toBuild == RobotType.MUCKRAKER) {
-          influence = 3;
+          influence = 1;
         }
         for (Direction dir : Game.directions) {
           for (Direction dir2 : Game.directions) {
@@ -76,14 +76,19 @@ public strictfp class RobotPlayer {
         RobotInfo[] attackable = rc.senseNearbyRobots(actionRadius, enemy);
         if (rc.canEmpower(actionRadius)) {
             for (RobotInfo robot : attackable) {
-                if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
+                // if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
                       rc.empower(actionRadius);
                       return;
-                }
+                // }
             }
         }
-        // Game.tryMove(rc, Game.randomDirection());
-        Game.tryMove(rc, enlightenmentCenter.directionTo(rc.getLocation()));
+
+        if (Math.random() < 0.8) {
+          Game.tryMove(rc, Game.randomDirection());
+        }
+        else {
+          Game.tryMove(rc, enlightenmentCenter.directionTo(rc.getLocation()));
+        }
     }
 
     static void runSlanderer() throws GameActionException {
@@ -110,12 +115,21 @@ public strictfp class RobotPlayer {
                 }
             }
         }
+        if (rc.senseNearbyRobots(actionRadius, enemy).length > 0) {
+          Game.tryMove(rc, Game.randomDirection());
+          return;
+        }
 
-        // MapLocation loc = rc.getLocation() //lattice
-        // for (Direction dir : Game.directions) {
-        //     if ((loc.add(dir).x % 3) == 1 )
-        //     Game.tryMove(rc, dir);
-        // }
-        Game.tryMove(rc, Game.randomDirection());
+        MapLocation loc = rc.getLocation(); //lattice
+        for (Direction dir : Game.directions) {
+          for (Direction dir2 : Game.directions) {
+            Direction d3 = Game.randomDirection();
+            if (!(((loc.add(d3).x % 3) == 1) ^ ((loc.add(d3).y % 3) == 1))) {
+              Game.tryMove(rc, d3);
+              return;
+            }
+          }
+        }
+        // Game.tryMove(rc, Game.randomDirection());
     }
 }

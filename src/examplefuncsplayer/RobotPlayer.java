@@ -62,6 +62,8 @@ public strictfp class RobotPlayer {
     }
 
     static void runEnlightenmentCenter() throws GameActionException {
+      System.out.println(rc.getInfluence());
+      System.out.println(rc.getConviction());
         RobotType toBuild = randomSpawnableRobotType();
         int influence = 50;
         for (Direction dir : directions) {
