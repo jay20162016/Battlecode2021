@@ -29,8 +29,8 @@ Politician            | Slanderer | Muckraker
 - **Politician**: 
 **Conclusion**: 
 
-- **Slanderer**: 
-**Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians.
+- **Slanderer**: Units that can only move. Will bring extra influence after 50 rounds and turn into politician after 300 rounds.
+**Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians and muckrakers.
 
 - **Muckraker**: 
 **Conclusion**
