@@ -30,7 +30,7 @@ Politician            | Slanderer | Muckraker
 **Conclusion**: 
 
 - **Slanderer**: 
-**Conclusion**
+**Conclusion**: Slanderers should hide and wait rather than move towards enemy's politicians.
 
 - **Muckraker**: 
 **Conclusion**
