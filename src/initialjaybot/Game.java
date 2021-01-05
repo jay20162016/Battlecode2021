@@ -1,7 +1,7 @@
 package initialjaybot;
 import battlecode.common.*;
 
-public strictfp class RobotPlayer {
+public strictfp class Game {
     static final RobotType[] spawnableRobot = {
         RobotType.POLITICIAN,
         RobotType.SLANDERER,
