@@ -47,3 +47,5 @@ Politician            | Slanderer | Muckraker
 For each units, **actions** includes movement and their abilities. Each action except passive abilities incurs a **cooldown penalty**, and robots can only perform actions when their **cooldown** is less than 1.
 
 After performing an action, the robot's cooldown will increase by `base cooldown value` divide by `passability of current map square`. Different kinds of robot have different base cooldown value, and each tile has a passability which is a real number between 0.1 and 1.0.
+
+**Conclusion**: Because of cooldown penalty, we can't create as much units as we can. We should create unit with high conviction rather than only few conviction. Also, to save cooldown wasted on movement, a pathfinding algorithm is necessary.
