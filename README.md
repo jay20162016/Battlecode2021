@@ -10,7 +10,15 @@ Teams are given the Battlecode software and a specification of the game rules in
 
 ## Units
 
+**Units** are robots which can move; these will be your team's primary means of combat. Different types of units have different special abilities, and success in the election will depend on how your team uses these abilities to your advantage.
 
+You are able to create units by transferring part of your influence to the new unit. The influence you spend is an integer parameter C, which you may choose for each new unit you create.
+
+The **conviction** of a unit describes how loyal it is to your party; by transferring more influence, you will obtain units that have greater conviction and are therefore more loyal.
+
+**Buildings** are immobile robots; the only type of available building is Enlightenment Centers.
+
+**Conclusion:** ***Conviction*** is a robot's health (if it falls below 0 then your robot is converted to the other team), and ***Influence*** is the main currency. You can choose the amount of influence spent on a robot, *higher influence = high conviction*.
 
 ![Chart](img/RobotsData.PNG)
 
