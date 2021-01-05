@@ -38,6 +38,6 @@ Politician            | Slanderer | Muckraker
 
 - **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0!
 
-**Enlightenment Centers**:
+**Enlightenment Centers**: Buildings that can bid for votes and create units. Initial enlightenment centers have 150 influence and others have a random amount of influence between 50 and 500. Each center will gain celi(0.2\*sqrt(t)) each round, while celi means round up and t represents round number.
 
-- **Conclusion**
+- **Conclusion**: Occupying as much centers as we can!! Enlightenment center is the only way we can gain influence from!
