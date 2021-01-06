@@ -36,7 +36,7 @@ Politician            | Slanderer | Muckraker
 
 **Muckraker**: Units that can kill an enemy's slanderer by 10 conviction and increase effect of our politicians' speeches in 50 rounds. The more influence the killed slanderer has, the more effect will increase.
 
-- **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0! However, muckrackers with low conviction can used to block enemy's politician.
+- **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0! However, muckrackers with low conviction can used to block enemy's politician. Also, muckrackers with low conviction can used for defense - enemy's politicians will overflow.
 
 **Enlightenment Centers**: Buildings that can bid for votes and create units, at least 2 for each game and may increasing with map size. Initial enlightenment centers have 150 influence and others have a random amount of influence between 50 and 500. Each center will gain celi(0.2\*sqrt(t)) each round, while celi means round up and t represents round number.
 
