@@ -23,8 +23,8 @@ The **conviction** of a unit describes how loyal it is to your party; by transfe
 ![Chart](img/RobotsData.PNG)
 
 Politician            | Slanderer | Muckraker
-:-------------------------:|:-------------------------:|:-------------------------:
-![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)  |  ![Enlightenment Center](img/enlightenmentcenter.png)
 
 **Politician**: Units that can transfer conviction to other units with cost of life and 10 conviction. His remaining conviction will divide into equal pieces and then transer to nearby units (if it's more than 10, otherwise, it will be a waste). Enemy units will lose conviction while our units gaining conviction.
 
