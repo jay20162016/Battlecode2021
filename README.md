@@ -28,7 +28,7 @@ Politician            | Slanderer | Muckraker
 
 **Politician**: Units that can transfer conviction to other units with cost of life and 10 conviction. His remaining conviction will divide into equal pieces and then transer to nearby units (if it's more than 10, otherwise, it will be a waste). Enemy units will lose conviction while our units gaining conviction.
 
-- **Conclusion**:  Aggressive action: Go and occupy other centers, give them as much conviction as we can and don't worried about their loyalty - enemies have to cost same amount of conviction to kill them. Defensive action(not recommended): Stay around the Enlightenment center in order to make sure the center won't be occupied, transfering conviction between two centers.
+- **Conclusion**: Defensive action(not recommended): Stay around the Enlightenment center in order to make sure the center won't be occupied, transfering conviction between two centers. Aggressive action: Go and occupy other centers, give them as much conviction as we can and don't worried about their loyalty - enemies have to cost same amount of conviction to kill them.
 
 **Slanderer**: Units that can only move. Will bring extra influence after 50 rounds according to his influence and turn into politician after 300 rounds.
 
@@ -36,7 +36,7 @@ Politician            | Slanderer | Muckraker
 
 **Muckraker**: Units that can kill an enemy's slanderer by 10 conviction and increase effect of our politicians' speeches in 50 rounds. The more influence the killed slanderer has, the more effect will increase.
 
-- **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0!
+- **Conclusion**: Muckerakers should get enemy's hided slanderers and kill them. Be careful on the conviction - mackraker will die if it falls below 0! However, muckrackers with low conviction can used to block enemy's politician.
 
 **Enlightenment Centers**: Buildings that can bid for votes and create units, at least 2 for each game and may increasing with map size. Initial enlightenment centers have 150 influence and others have a random amount of influence between 50 and 500. Each center will gain celi(0.2\*sqrt(t)) each round, while celi means round up and t represents round number.
 
@@ -49,3 +49,9 @@ For each units, **actions** includes movement and their abilities. Each action e
 After performing an action, the robot's cooldown will increase by `base cooldown value` divide by `passability of current map square`. Different kinds of robot have different base cooldown value, and each tile has a passability which is a real number between 0.1 and 1.0.
 
 **Conclusion**: Because of cooldown penalty, we can't create as much units as we can. We should create unit with high conviction rather than only few conviction. Also, to save cooldown wasted on movement, a pathfinding algorithm is necessary.
+
+## Communication
+
+Robots can't share any variable to each other, but public **flags** with changeable color are provided. The color is a 24-bit non-negative integer, which is between 0 and 16777216. All units can see flags of every sensed units, even enlightenment center.
+
+**Conclusion**: Splicing all information to a 7-digit number, and then share it with our team.
