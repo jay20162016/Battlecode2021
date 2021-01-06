@@ -22,7 +22,7 @@ The **conviction** of a unit describes how loyal it is to your party; by transfe
 
 ![Chart](img/RobotsData.PNG)
 
-Politician            | Slanderer | Muckraker
+Politician            | Slanderer | Muckraker  | Enlightenment Center
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![Politician](img/politician.png)  |  ![Slanderer](img/slanderer.png) |  ![Muckraker](img/muckraker.png)  |  ![Enlightenment Center](img/enlightenmentcenter.png)
 
