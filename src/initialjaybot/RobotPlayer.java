@@ -11,11 +11,6 @@ public strictfp class RobotPlayer {
 
     @SuppressWarnings("unused")
     public static void run(RobotController rc) throws GameActionException {
-      if (rc.getRoundNum() > 1500) {
-  rc.resign();
-}
-
-
         // This is the RobotController object. You use it to perform actions from this robot,
         // and to get information on its current status.
         RobotPlayer.rc = rc;
@@ -62,7 +57,7 @@ public strictfp class RobotPlayer {
       // System.out.println(rc.getConviction());
         // RobotType toBuild = Game.randomSpawnableRobotType(0.2, 0.4, 0.4);
         RobotType toBuild = Game.randomSpawnableRobotType(0.2, 0.2, 0.6);
-        int influence = rc.getInfluence() - 150;
+        int influence = rc.getInfluence() - 150; // UNTESTED! TODO! TODO: TEST, PROBABLY MAKE DYNAMIC
         if (toBuild == RobotType.MUCKRAKER && Math.random() < 400/(rc.getRoundNum()+1)) {
           influence = 1;
         }
@@ -79,14 +74,10 @@ public strictfp class RobotPlayer {
         int actionRadius = rc.getType().actionRadiusSquared;
         if (rc.canEmpower(actionRadius) && rc.getCooldownTurns() == 0) {
             for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, enemy)) {
-                if ((robot.type == RobotType.ENLIGHTENMENT_CENTER || Math.random() < 0.1) &&
-                rc.getLocation().isWithinDistanceSquared(robot.location, actionRadius)) {
+                if (robot.type == RobotType.ENLIGHTENMENT_CENTER || Math.random() < 0.1) {
                       rc.empower(actionRadius);
                       // System.out.println("initialjaybot - BIG BOOM KAMIKAZE!!!");
                       return;
-                }
-                else {
-                      Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
                 }
             }
             for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, Team.NEUTRAL)) {
