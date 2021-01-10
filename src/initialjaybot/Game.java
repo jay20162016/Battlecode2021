@@ -91,4 +91,19 @@ public strictfp class Game {
         } else return false;
 
     }
+
+    static int xCoord(MapLocation loc) {
+      return loc.x & 127;
+    }
+
+    static int yCoord(MapLocation loc) {
+      return loc.y & 127;
+    }
+
+    static MapLocation fromCoords(MapLocation loc, int x, int y) {
+      int p = (loc.x - x) & 127, q = (loc.y - y) & 127;
+      if (p >= 64) p -= 128; if (q >= 64) q -= 128;
+
+      return new MapLocation(loc.x + p, loc.y + q);
+    }
 }
