@@ -56,69 +56,151 @@ public strictfp class RobotPlayer {
       // System.out.println(rc.getInfluence());
       // System.out.println(rc.getConviction());
         // RobotType toBuild = Game.randomSpawnableRobotType(0.2,0.4,0.4);
+        rc.bid((rc.getInfluence())/7);
         int influence = 50;
         RobotType toBuild;
-        if ((rc.getRoundNum()+1) <100){
-          toBuild = Game.randomSpawnableRobotType(0,0,1);
+        if ((rc.getRoundNum()+1) <30){
+          toBuild = Game.randomSpawnableRobotType(0,1,0);
           influence = 1;
         }
         else{
           if ((rc.getRoundNum()+1) <200){
-            toBuild = Game.randomSpawnableRobotType(0.2,0.5,0.3);
-            influence = 50;
+            toBuild = Game.randomSpawnableRobotType(0.2,0.1,0.7);
+            influence = (rc.getInfluence())/21;
           }
           else{
             if ((rc.getRoundNum()+1) <700){
-            toBuild = Game.randomSpawnableRobotType(0.2,0.1,0.7);
-            influence = 100;
+            toBuild = Game.randomSpawnableRobotType(0.4,0.2,0.4);
+            influence = (rc.getInfluence())/17;
           }
             else{
-              toBuild = Game.randomSpawnableRobotType(0.3,0.1,6);
-              influence = (rc.getInfluence())/7;
+              toBuild = Game.randomSpawnableRobotType(0.9,0.05,0.05);
+              influence = (rc.getInfluence())/13;
             }
           }
         }
         // int influence = 50;
         for (Direction dir : Game.directions) {
-          if (toBuild == RobotType.POLITICIAN || toBuild == RobotType.MUCKRAKER){
+          if (toBuild == RobotType.MUCKRAKER){
+            Game.tryBuild(rc, toBuild, dir, 1);
+          }
+          if (toBuild == RobotType.POLITICIAN && influence>=10){
             Game.tryBuild(rc, toBuild, dir, influence);
           }
           else{
-            Game.tryBuild(rc, toBuild, dir, 30);
+            Game.tryBuild(rc, toBuild, dir, 37);
           }
         }
     }
 
     static void runPolitician() throws GameActionException {
         Team enemy = rc.getTeam().opponent();
+        Team ally = rc.getTeam();
+        int sensorRadius = rc.getType().sensorRadiusSquared;
         int actionRadius = rc.getType().actionRadiusSquared;
-        RobotInfo[] attackable = rc.senseNearbyRobots(actionRadius, enemy);
-        if (attackable.length != 0 && rc.canEmpower(actionRadius)) {
-            // System.out.println("empowering...");
-            rc.empower(actionRadius);
-            // System.out.println("empowered");
-            return;
+        if (rc.canEmpower(actionRadius) && rc.getCooldownTurns() == 0) {
+            for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, enemy)) {
+                rc.empower(actionRadius);
+                // System.out.println("initialjaybot - BIG BOOM KAMIKAZE!!!");
+                return;
+            }
+            for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, Team.NEUTRAL)) {
+                rc.empower(actionRadius);
+                // System.out.println("initialjaybot - BIG BOOM KAMIKAZE!!!");
+                return;
+            }
         }
-        Game.tryMove(rc,Game.randomDirection());
-    }
+        if (rc.getRoundNum()<1700){
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
+          Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
+        }
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+          if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;}
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, Team.NEUTRAL)) {
+            Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
+}
+        Game.tryMove(rc, Game.randomDirection());
+      }
+      else{
+        if (rc.getRoundNum()<2300){
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
+          Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));}
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+          Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));}
+
+        Game.tryMove(rc, Game.randomDirection());
+      }
+      else{
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
+          Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
+        }
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+          if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;}
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, Team.NEUTRAL)) {
+            Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
+}
+        Game.tryMove(rc, Game.randomDirection());
+      }
+      }
+
+
+
+  }
 
     static void runSlanderer() throws GameActionException {
-        Game.tryMove(rc,Game.randomDirection());
+        Team enemy = rc.getTeam().opponent();
+        Team ally = rc.getTeam();
+        int sensorRadius = rc.getType().sensorRadiusSquared;
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
+            if (robot.type == RobotType.MUCKRAKER) {
+                // AAAAARRRGGHHH! it's a muckraker!
+                if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;
+                // System.out.println("initialjaybot - A MUCKRAKER ARCHER !!!");
+            }
+        }
+        if (Math.random()<0.1){
+        Game.tryMove(rc, Game.randomDirection());}
     }
 
     static void runMuckraker() throws GameActionException {
         Team enemy = rc.getTeam().opponent();
+        Team ally = rc.getTeam();
+        int sensorRadius = rc.getType().sensorRadiusSquared;
         int actionRadius = rc.getType().actionRadiusSquared;
         for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, enemy)) {
-            if (robot.type.canBeExposed()) {
+            if (robot.type.canBeExposed() && rc.canExpose(robot.location) &&
+            rc.getLocation().isWithinDistanceSquared(robot.location, actionRadius)) {
                 // It's a slanderer... go get them!
-                if (rc.canExpose(robot.location)) {
-                    // System.out.println("e x p o s e d");
-                    rc.expose(robot.location);
-                    return;
-                }
+                rc.expose(robot.location);
+                // System.out.println("initialjaybot - e x p o s e d and shot");
+                return;
+            }
+            else {
+                Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
             }
         }
-        Game.tryMove(rc,Game.randomDirection());
-    }
+        // for (RobotInfo robot : rc.senseNearbyRobots(actionRadius)) {
+        //   Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
+        //
+        // }
+        if (rc.getRoundNum()<1000){
+                for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+                if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;}
 }
+        else{
+            if (rc.getRoundNum()<2000){
+            for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
+              Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));}
+            for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+              Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));}
+
+            Game.tryMove(rc, Game.randomDirection());
+          }
+          else{
+            for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,ally)) {
+                if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;}
+          }
+
+
+      }
+}}
