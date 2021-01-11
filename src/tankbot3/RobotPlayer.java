@@ -56,6 +56,7 @@ public strictfp class RobotPlayer {
       // System.out.println(rc.getInfluence());
       // System.out.println(rc.getConviction());
         // RobotType toBuild = Game.randomSpawnableRobotType(0.2,0.4,0.4);
+        rc.bid(1);
         int influence = 50;
         RobotType toBuild;
         if ((rc.getRoundNum()+1) <30){
