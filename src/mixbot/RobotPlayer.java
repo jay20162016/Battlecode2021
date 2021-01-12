@@ -1,6 +1,6 @@
-package initialjaybot;
+package mixbot;
 import battlecode.common.*;
-import initialjaybot.Game;
+import mixbot.Game;
 
 public strictfp class RobotPlayer {
     static RobotController rc;
@@ -52,98 +52,44 @@ public strictfp class RobotPlayer {
     }
 
     static void runEnlightenmentCenter() throws GameActionException {
-      // //System.out.println("initialjaybot - infl, conv");
-      // //System.out.println(rc.getInfluence());
-      // //System.out.println(rc.getConviction());
-        // RobotType toBuild = Game.randomSpawnableRobotType(0.2, 0.2, 0.6);
-        // RobotType toBuild = Game.randomSpawnableRobotType(
-        //     (rc.getRoundNum() + 2000)/7000 * 0.7,
-        //     0.3,
-        //     0.8 - (rc.getRoundNum() + 2000)/7000 * 0.7
-        // );
-        double pol, sln, muk;
-        pol = 0.5;
-        sln = 0.2;
-        muk = 0.3;
-        if (rc.getRoundNum() >= 400) {
-          pol = 0.7;
-          sln = 0.1;
-          muk = 0.2;
+      // System.out.println(rc.getInfluence());
+      // System.out.println(rc.getConviction());
+        // RobotType toBuild = Game.randomSpawnableRobotType(0.2,0.4,0.4);
+        if (rc.canBid((rc.getInfluence())/7)) rc.bid((rc.getInfluence())/7);
+        int influence = 50;
+        RobotType toBuild;
+        if ((rc.getRoundNum()+1) <30){
+          toBuild = Game.randomSpawnableRobotType(0,1,0);
+          influence = 1;
         }
-        RobotType toBuild = Game.randomSpawnableRobotType(pol, sln, muk);
-        int influence;
-
-        switch (toBuild) {
-          case MUCKRAKER:
-            if (rc.getInfluence() < Math.sqrt(200 * rc.getRoundNum()) && rc.getInfluence() < rc.getRoundNum()
-                   && rc.getRoundNum() % 10 == 0) {
-              toBuild = RobotType.SLANDERER;
+        else{
+          if ((rc.getRoundNum()+1) <200){
+            toBuild = Game.randomSpawnableRobotType(0.2,0.1,0.7);
+            influence = (rc.getInfluence())/21;
+          }
+          else{
+            if ((rc.getRoundNum()+1) <700){
+            toBuild = Game.randomSpawnableRobotType(0.4,0.2,0.4);
+            influence = (rc.getInfluence())/17;
+          }
+            else{
+              toBuild = Game.randomSpawnableRobotType(0.9,0.05,0.05);
+              influence = (rc.getInfluence())/13;
             }
-            else {
-              //       min         ( safety fudge,                                    half influence)
-              influence = Math.min(rc.getInfluence() - Math.max(rc.getRoundNum(), 150), rc.getInfluence()/2);
-              if (Math.random() < 400/(rc.getRoundNum()+1)) {
-                influence = 1;
-              }
-              break;
-            }
-          case POLITICIAN:
-          if (rc.getInfluence() < Math.sqrt(200 * rc.getRoundNum()) && rc.getInfluence() < rc.getRoundNum()
-                 && rc.getRoundNum() % 10 == 0) {
-              toBuild = RobotType.SLANDERER;
-            }
-            else {
-              //       min         ( safety fudge,                                    949)
-              influence = Math.min(rc.getInfluence() - Math.max(rc.getRoundNum(), 150), 949);
-              break;
-            }
-          case SLANDERER:
-            //       min         ( safety fudge,                                    949)
-            influence = (int) Math.floor(Math.min(rc.getInfluence() - Math.max(rc.getRoundNum(), 150), 949)/12) * 12;
-            if (rc.getInfluence() <= 20 || Math.random() < 0.4) {
-              toBuild = null;
-              influence = -1000;
-            }
-            else if (rc.getInfluence() <= 24) {
-              influence = 21;
-            }
-            else if (influence < 0) {
-              influence = rc.getInfluence();
-            }
-            break;
-          default:
-            toBuild = null;
-            influence = 0;
-        }
-
-        if (influence < 0) {
-          influence = Math.min(rc.getInfluence(), Math.abs(rc.getInfluence() - 50));
-        }
-
-        System.out.println(toBuild);
-        System.out.println(influence);
-
-        if (rc.getRoundNum() < 20 && rc.getInfluence() == 150) {
-          influence = 150;
-          toBuild = RobotType.SLANDERER;
-        }
-
-
-        for (RobotInfo robot : rc.senseNearbyRobots(rc.getType().sensorRadiusSquared, rc.getTeam().opponent())) {
-            //rc.setIndicatorDot(rc.getLocation(), 255, 0, 0);
-            //rc.setIndicatorLine(rc.getLocation(), robot.getLocation(), 255, 0, 0);
-            toBuild = RobotType.POLITICIAN;
-            influence = (int) (rc.getInfluence() / 1.2) + 12;
-        }
-
-        for (Direction dir : Game.directions) {
-          for (Direction dir2 : Game.directions) {
-            Game.tryBuild(rc, toBuild, Game.randomDirection(), influence);
           }
         }
-
-        int vote = (int) (Math.random() * rc.getInfluence()/10);
-        if (rc.canBid(vote)) rc.bid(vote);
+        // int influence = 50;
+        for (Direction dir : Game.directions) {
+          if (toBuild == RobotType.MUCKRAKER){
+            Game.tryBuild(rc, toBuild, dir, 1);
+          }
+          if (toBuild == RobotType.POLITICIAN && influence>=10){
+            Game.tryBuild(rc, toBuild, dir, influence);
+          }
+          else{
+            Game.tryBuild(rc, toBuild, dir, 37);
+          }
+        }
     }
 
     static void runPolitician() throws GameActionException {
@@ -178,9 +124,9 @@ public strictfp class RobotPlayer {
             }
         }
 
-        if (rc.senseNearbyRobots(sensorRadius, me).length < 7) {
-          return;
-        }
+        // if (rc.senseNearbyRobots(sensorRadius, me).length < 7) {
+        //   return;
+        // }
         mouter : {
             for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, Team.NEUTRAL)) {
                 Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
@@ -292,9 +238,9 @@ public strictfp class RobotPlayer {
             }
         }
 
-        if (rc.senseNearbyRobots(sensorRadius, me).length < 7) {
-          return;
-        }
+        // if (rc.senseNearbyRobots(sensorRadius, me).length < 7) {
+        //   return;
+        // }
         mouter : {
             for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
               Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
