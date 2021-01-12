@@ -76,16 +76,58 @@ public strictfp class Game {
         }
     }
 
+    static Direction[] directionInterval(Direction dir) {
+      // Blacvk magic by youmu; i cuold do it too but i'mm too lazy...
+      // even formattteing isi mezzed up
+         Direction[] dirs = new Direction[3];
+         if (dir == directions[0]) {
+             dirs = new Direction[]{directions[7], directions[0], directions[1]};
+         }
+         else if (dir == directions[1]) {
+             dirs = new Direction[]{directions[0], directions[1], directions[2]};
+         }
+         else if (dir == directions[2]) {
+             dirs = new Direction[]{directions[1], directions[2], directions[3]};
+         }
+         else if (dir == directions[3]) {
+             dirs = new Direction[]{directions[2], directions[3], directions[4]};
+         }
+         else if (dir == directions[4]) {
+             dirs = new Direction[]{directions[3], directions[4], directions[5]};
+         }
+         else if (dir == directions[5]) {
+             dirs = new Direction[]{directions[4], directions[5], directions[6]};
+         }
+         else if (dir == directions[6]) {
+             dirs = new Direction[]{directions[5], directions[6], directions[7]};
+         }
+         else {
+             dirs = new Direction[]{directions[6], directions[7], directions[0]};
+         }
+         return dirs;
+     }
+
+
     static boolean tryMove(RobotController rc, Direction dir) throws GameActionException {
         if (rc.canMove(dir)) {
             rc.move(dir);
             return true;
-        } else return false;
+        }
+        Direction[] dir2= directionInterval(dir);
+        if (rc.canMove(dir2[0])) {
+            rc.move(dir2[0]);
+            return true;
+        }
+        if (rc.canMove(dir2[2])) {
+            rc.move(dir2[2]);
+            return true;
+        }
+        return false;
 
     }
 
     static boolean tryBuild(RobotController rc, RobotType toBuild, Direction dir, int influence) throws GameActionException {
-        if (rc.canBuildRobot(toBuild, dir, influence)) {
+        if (toBuild != null && rc.canBuildRobot(toBuild, dir, influence)) {
             rc.buildRobot(toBuild, dir, influence);
             return true;
         } else return false;
