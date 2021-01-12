@@ -1,4 +1,4 @@
-package tankbot;
+package tankbot2;
 import battlecode.common.*;
 
 public strictfp class Game {
