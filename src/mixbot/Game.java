@@ -1,4 +1,4 @@
-package initialjaybot;
+package mixbot;
 import battlecode.common.*;
 
 public strictfp class Game {
