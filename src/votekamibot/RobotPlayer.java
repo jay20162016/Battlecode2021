@@ -22,6 +22,7 @@ public strictfp class RobotPlayer {
                       rc.buildRobot(RobotType.MUCKRAKER, directions[(int) (Math.random() * directions.length)], rc.getInfluence() / 2);
                   }
               }
+              if (rc.canBid(rc.getInfluence() / 100)) {rc.bid(rc.getInfluence() / 100);}
             } catch (Exception e) {}
 
             Clock.yield();

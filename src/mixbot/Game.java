@@ -1,5 +1,6 @@
 package mixbot;
 import battlecode.common.*;
+import java.util.Random;
 
 public strictfp class Game {
     static final RobotType[] spawnableRobot = {
@@ -19,12 +20,22 @@ public strictfp class Game {
         Direction.NORTHWEST,
     };
 
+    static int rs;
+    static Random rand = null;
+
+    static double random() {
+      if (rand == null) {
+        rand = new Random(rs);
+      }
+      return rand.nextDouble();
+    }
+
     static Direction randomDirection() {
-      return directions[(int) (Math.random() * directions.length)];
+      return directions[(int) (random() * directions.length)];
     }
 
     static Direction randomDirection(double n, double ne, double e, double se, double s, double sw, double w, double nw) {
-        double random = Math.random();
+        double random = random();
 
         if (random < n) {
           return Direction.NORTH;
@@ -56,11 +67,11 @@ public strictfp class Game {
     }
 
     static RobotType randomSpawnableRobotType() {
-       return spawnableRobot[(int) (Math.random() * spawnableRobot.length)];
+       return spawnableRobot[(int) (random() * spawnableRobot.length)];
     }
 
     static RobotType randomSpawnableRobotType(double politician, double slanderer, double muckraker) {
-        double random = Math.random();
+        double random = random();
 
         if (random < politician) {
           return RobotType.POLITICIAN;
@@ -78,7 +89,7 @@ public strictfp class Game {
 
     static Direction[] directionInterval(Direction dir) {
       // Blacvk magic by youmu; i cuold do it too but i'mm too lazy...
-      // even formattteing isi mezzed up
+      // even formattteing isi mezzed up (not anymore)
          Direction[] dirs = new Direction[3];
          if (dir == directions[0]) {
              dirs = new Direction[]{directions[7], directions[0], directions[1]};
@@ -109,6 +120,7 @@ public strictfp class Game {
 
 
     static boolean tryMove(RobotController rc, Direction dir) throws GameActionException {
+        if (dir == null) {return false;}
         if (rc.canMove(dir)) {
             rc.move(dir);
             return true;
@@ -128,6 +140,7 @@ public strictfp class Game {
 
 
    static boolean tryMoveAbs(RobotController rc, Direction dir) throws GameActionException {
+       if (dir == null) {return false;}
        if (rc.canMove(dir)) {
            rc.move(dir);
            return true;
@@ -140,21 +153,53 @@ public strictfp class Game {
             rc.buildRobot(toBuild, dir, influence);
             return true;
         } else return false;
-
     }
 
-    static int xCoord(MapLocation loc) {
-      return loc.x & 127;
+    static int toCoords(MapLocation loc) {
+      return loc.x & 127 * 128 + loc.y & 127;
     }
 
-    static int yCoord(MapLocation loc) {
-      return loc.y & 127;
-    }
-
-    static MapLocation fromCoords(MapLocation loc, int x, int y) {
+    static MapLocation fromCoords(MapLocation loc, int coord) {
+      int x = (int) (coord / 128);
+      int y = (int) (coord % 128);
       int p = (loc.x - x) & 127, q = (loc.y - y) & 127;
       if (p >= 64) p -= 128; if (q >= 64) q -= 128;
 
       return new MapLocation(loc.x + p, loc.y + q);
+    }
+
+    static int dir(Direction dir) {
+       if (dir == directions[0]) {
+           return 0;
+       }
+       else if (dir == directions[1]) {
+           return 1;
+       }
+       else if (dir == directions[2]) {
+           return 2;
+       }
+       else if (dir == directions[3]) {
+           return 3;
+       }
+       else if (dir == directions[4]) {
+           return 4;
+       }
+       else if (dir == directions[5]) {
+           return 5;
+       }
+       else if (dir == directions[6]) {
+           return 6;
+       }
+       else {
+           return 7;
+       }
+    }
+
+    static Direction fromDir(int d) {
+      // System.out.println("JEISLFJEISLFJSELIJFSLIEFJ");
+      // System.out.println(d);
+      if (d < 8)
+        return directions[d];
+      else return null;
     }
 }
