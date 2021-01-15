@@ -155,17 +155,57 @@ public strictfp class Game {
         } else return false;
     }
 
-    static int toCoords(MapLocation loc) {
-      return loc.x & 127 * 128 + loc.y & 127;
+    // static int toCoords(MapLocation loc) {
+    //   return loc.x & 127 * 128 + loc.y & 127;
+    // }
+    //
+    // static MapLocation fromCoords(MapLocation loc, int coord) {
+    //   int x = (int) (coord / 128);
+    //   int y = (int) (coord % 128);
+    //   // int p = (loc.x - x) & 127, q = (loc.y - y) & 127;
+    //   int p = (x - loc.x) & 127, q = (y - loc.y) & 127;
+    //   if (p >= 64) p -= 128; if (q >= 64) q -= 128;
+    //
+    //   return new MapLocation(loc.x + p, loc.y + q);
+    // }
+
+
+    static final int NBITS = 7;
+    static final int BITMASK = (1 << NBITS) - 1;
+
+    static int toCoords(MapLocation location) throws GameActionException {
+        int x = location.x, y = location.y;
+        int encodedLocation = ((x & BITMASK) << NBITS) + (y & BITMASK);
+        return encodedLocation;
     }
 
-    static MapLocation fromCoords(MapLocation loc, int coord) {
-      int x = (int) (coord / 128);
-      int y = (int) (coord % 128);
-      int p = (loc.x - x) & 127, q = (loc.y - y) & 127;
-      if (p >= 64) p -= 128; if (q >= 64) q -= 128;
+    static MapLocation fromCoords(MapLocation loc, int flag) {
+        int y = flag & BITMASK;
+        int x = (flag >> NBITS) & BITMASK;
 
-      return new MapLocation(loc.x + p, loc.y + q);
+        MapLocation currentLocation = loc;
+        int offsetX128 = currentLocation.x >> NBITS;
+        int offsetY128 = currentLocation.y >> NBITS;
+        MapLocation actualLocation = new MapLocation((offsetX128 << NBITS) + x, (offsetY128 << NBITS) + y);
+
+        // You can probably code this in a neater way, but it works
+        MapLocation alternative = actualLocation.translate(-(1 << NBITS), 0);
+        if (loc.distanceSquaredTo(alternative) < loc.distanceSquaredTo(actualLocation)) {
+            actualLocation = alternative;
+        }
+        alternative = actualLocation.translate(1 << NBITS, 0);
+        if (loc.distanceSquaredTo(alternative) < loc.distanceSquaredTo(actualLocation)) {
+            actualLocation = alternative;
+        }
+        alternative = actualLocation.translate(0, -(1 << NBITS));
+        if (loc.distanceSquaredTo(alternative) < loc.distanceSquaredTo(actualLocation)) {
+            actualLocation = alternative;
+        }
+        alternative = actualLocation.translate(0, 1 << NBITS);
+        if (loc.distanceSquaredTo(alternative) < loc.distanceSquaredTo(actualLocation)) {
+            actualLocation = alternative;
+        }
+        return actualLocation;
     }
 
     static int dir(Direction dir) {
