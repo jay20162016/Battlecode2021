@@ -43,16 +43,16 @@ public strictfp class RobotPlayer {
             influence = 1;
           }
           else{
-            toBuild = Game.randomSpawnableRobotType(0.7,0,0.3);
+            toBuild = Game.randomSpawnableRobotType(0.5,0,0.5);
             if (toBuild == RobotType.MUCKRAKER){
-            influence = 3;
+            influence = 7;
           }
           else{
-            influence = 70;
+            influence = 20;
           }
 
           }
-          if (rc.getRoundNum()%36 < 2){
+          if (rc.getRoundNum()%23 < 2 || rc.getInfluence()>2000){
             influence = Math.min(rc.getInfluence(), 949);
             toBuild = RobotType.SLANDERER;
           }
@@ -61,14 +61,17 @@ public strictfp class RobotPlayer {
                 Game.tryBuild(rc, toBuild, Game.randomDirection(), influence);
               }
             }
-          //   if (rc.getRoundNum()+1>420){
-          //     if (rc.getInfluence()<300){
-          //   rc.bid(rc.getInfluence()/10);
-          // }
-          // else{
-          //   rc.bid(30);
-          // }
-          // }
+            if (rc.getRoundNum()+1>420 && rc.getTeamVotes()<751){
+              if (rc.getInfluence()<300){
+            rc.bid(rc.getInfluence()/10);
+          }
+          else{
+            rc.bid(30);
+          }
+          }
+          else{
+            if (rc.getRoundNum()+1<420) rc.bid(1);
+          }
       }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static void runPolitician() throws GameActionException {
@@ -77,6 +80,7 @@ public strictfp class RobotPlayer {
       int sensorRadius = rc.getType().sensorRadiusSquared;
       int actionRadius = rc.getType().actionRadiusSquared;
       int backing = rc.senseNearbyRobots(actionRadius, me).length;
+      int enemies = rc.senseNearbyRobots(actionRadius, enemy).length;
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
       if (rc.canEmpower(actionRadius) && rc.getCooldownTurns() == 0) {
@@ -89,16 +93,19 @@ public strictfp class RobotPlayer {
               return;
           }
       }
+      for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, Team.NEUTRAL)) {
+        Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()));
+      }
       for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,me)) {
           if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
-              Game.tryMove(rc, Game.randomDirection());
+              Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
               if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;
           }
       }
       for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,enemy)) {
             Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
           }
-      Game.tryMove(rc, Game.randomDirection());
+      Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     static void runSlanderer() throws GameActionException {
@@ -109,9 +116,10 @@ public strictfp class RobotPlayer {
       for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
               if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;
       }
-      for (RobotInfo robot : rc.senseNearbyRobots(3, me)) {
+      Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
+      for (RobotInfo robot : rc.senseNearbyRobots(2, me)) {
           if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
-              Game.tryMove(rc, Game.randomDirection());
+              Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
               if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;
           }
       }
@@ -122,8 +130,8 @@ public strictfp class RobotPlayer {
       Team enemy = rc.getTeam().opponent();
       int sensorRadius = rc.getType().sensorRadiusSquared;
       int actionRadius = rc.getType().actionRadiusSquared;
-
       int backing = rc.senseNearbyRobots(actionRadius, me).length;
+      int enemies = rc.senseNearbyRobots(actionRadius, enemy).length;
       //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, enemy)) {
             if (robot.type.canBeExposed() && rc.canExpose(robot.location) &&
@@ -132,15 +140,18 @@ public strictfp class RobotPlayer {
                 return;
             }
         }
-        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius)) {
-            if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
-                Game.tryMove(rc, Game.randomDirection());
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, Team.NEUTRAL)) {
+          Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()));
+        }
+        for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, me)) {
+            if (robot.type == RobotType.SLANDERER) {
+                Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
                 if (Game.tryMove(rc, robot.getLocation().directionTo(rc.getLocation()))) return;
             }
         }
         for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius,enemy)) {
               if (backing > 10) Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
         }
-        if (backing > 15) Game.tryMove(rc, Game.randomDirection());
+        if (backing > enemies) Game.tryMove(rc, Game.randomDirection(0,0.2,0.11,0.2,0,0.2,0.09,0.2));
   }
 }
