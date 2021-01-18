@@ -57,11 +57,11 @@ public strictfp class RobotPlayer {
         }
     }
     /*
-    ██████   ██████      ██████  ██ ██████       ██ ██
-    ██   ██ ██    ██     ██   ██ ██ ██   ██     ██   ██
-    ██   ██ ██    ██     ██████  ██ ██   ██     ██   ██
-    ██   ██ ██    ██     ██   ██ ██ ██   ██     ██   ██
-    ██████   ██████      ██████  ██ ██████       ██ ██
+    ######   ######      ######  ## ######       ## ##
+    ##   ## ##    ##     ##   ## ## ##   ##     ##   ##
+    ##   ## ##    ##     ######  ## ##   ##     ##   ##
+    ##   ## ##    ##     ##   ## ## ##   ##     ##   ##
+    ######   ######      ######  ## ######       ## ##
     */
 
     static int bidinfl = 1;
@@ -94,11 +94,11 @@ public strictfp class RobotPlayer {
     }
 
     /*
-    ██████  ██    ██ ███    ██     ███████  ██████      ██ ██
-    ██   ██ ██    ██ ████   ██     ██      ██          ██   ██
-    ██████  ██    ██ ██ ██  ██     █████   ██          ██   ██
-    ██   ██ ██    ██ ██  ██ ██     ██      ██          ██   ██
-    ██   ██  ██████  ██   ████     ███████  ██████      ██ ██
+    ######  ##    ## ###    ##     #######  ######      ## ##
+    ##   ## ##    ## ####   ##     ##      ##          ##   ##
+    ######  ##    ## ## ##  ##     #####   ##          ##   ##
+    ##   ## ##    ## ##  ## ##     ##      ##          ##   ##
+    ##   ##  ######  ##   ####     #######  ######      ## ##
     */
 
     static int pflag = 0;
@@ -162,7 +162,6 @@ public strictfp class RobotPlayer {
           influence = 42;
         }
         else if (rc.getRoundNum() < 22) {
-          System.out.println("POLITICIAN:: SCOUT");
           toBuild = RobotType.POLITICIAN;
           influence = 1;
         }
@@ -190,7 +189,6 @@ public strictfp class RobotPlayer {
           }
         }
         else {
-          System.out.println("POLITICIAN:: LASTCHOICE");
           toBuild = RobotType.POLITICIAN;
           influence = rc.getInfluence() - 10;
         }
@@ -226,9 +224,9 @@ public strictfp class RobotPlayer {
         }
       }
 
-      System.out.println(toBuild);
-      System.out.println(influence);
-      System.out.println(nextdir);
+      // System.out.println(toBuild);
+      // System.out.println(influence);
+      // System.out.println(nextdir);
 
       Team me = rc.getTeam();
       Team enemy = me.opponent();
@@ -237,7 +235,6 @@ public strictfp class RobotPlayer {
 
       for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, enemy)) {
           if (robot.type == RobotType.MUCKRAKER) {
-            System.out.println("POLITICIAN:: SENSESPAWN");
             toBuild = RobotType.POLITICIAN;
             influence = rc.getInfluence() - 20;
           }
@@ -246,7 +243,6 @@ public strictfp class RobotPlayer {
             influence = 1;
           }
           else if (rc.getInfluence() > robot.influence) {
-            System.out.println("POLITICIAN:: SENSESPAWN");
             toBuild = RobotType.POLITICIAN;
             influence = rc.getInfluence() - 20;
           }
@@ -287,11 +283,11 @@ public strictfp class RobotPlayer {
               if (influence > 40) {
                 toBuild = RobotType.POLITICIAN;
                 influence = rc.getInfluence() - 20;
-                System.out.println("POLITICIAN:: GLOBALBROADCAST");
               }
             }
             flag = oflag;
             System.out.println("BOOMBROADCASTING");
+            System.out.println("TYPE: " + ((oflag >> 22) >> 1));
             // System.out.println(id);
             // System.out.println(Game.fromCoords(rc.getLocation(), flag));
             break;
@@ -308,11 +304,11 @@ public strictfp class RobotPlayer {
     }
 
     /*
-    ██████  ██    ██ ███    ██     ██████   ██████  ██           ██ ██
-    ██   ██ ██    ██ ████   ██     ██   ██ ██    ██ ██          ██   ██
-    ██████  ██    ██ ██ ██  ██     ██████  ██    ██ ██          ██   ██
-    ██   ██ ██    ██ ██  ██ ██     ██      ██    ██ ██          ██   ██
-    ██   ██  ██████  ██   ████     ██       ██████  ███████      ██ ██
+    ######  ##    ## ###    ##     ######   ######  ##           ## ##
+    ##   ## ##    ## ####   ##     ##   ## ##    ## ##          ##   ##
+    ######  ##    ## ## ##  ##     ######  ##    ## ##          ##   ##
+    ##   ## ##    ## ##  ## ##     ##      ##    ## ##          ##   ##
+    ##   ##  ######  ##   ####     ##       ######  #######      ## ##
     */
 
     static int scout = 0;
@@ -322,6 +318,9 @@ public strictfp class RobotPlayer {
     static int guardturns = 0;
     static MapLocation target = null;
     static void runPolitician() throws GameActionException {
+      // if (rc.getRoundNum() > 1493) {
+      //   if (rc.canEmpower(rc.getType().actionRadiusSquared)) {rc.empower(rc.getType().actionRadiusSquared);}
+      // }
       RobotInfo[] robots;
       Direction dir;
       MapLocation loc;
@@ -433,11 +432,11 @@ public strictfp class RobotPlayer {
         flag = 3;
         if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
           flag = (2 << 22) + Game.toCoords(robot.getLocation());
-          System.out.println("SSUUPPEERR BROADCAST!!!");
+          // System.out.println("SSUUPPEERR BROADCAST!!!");
         }
         else if (robot.type == RobotType.SLANDERER) {
           flag = (3 << 22) + Game.toCoords(robot.getLocation());
-          System.out.println("SSUUPPEERR BROADCAST!!!");
+          // System.out.println("SSUUPPEERR BROADCAST!!!");
         }
         target = robot.getLocation();
       }
@@ -453,7 +452,7 @@ public strictfp class RobotPlayer {
         // rc.setIndicatorDot(rc.getLocation(), 255, 0, 0);
         // rc.setIndicatorLine(rc.getLocation(), robot.getLocation(), 255, 0, 0);
         flag = (2 << 22) + Game.toCoords(robot.getLocation());
-        System.out.println("SSUUPPEERR BROADCAST!!!");
+        // System.out.println("SSUUPPEERR BROADCAST!!!");
         target = robot.getLocation();
       }
 
@@ -492,11 +491,11 @@ public strictfp class RobotPlayer {
     }
 
     /*
-    ██████  ██    ██ ███    ██     ██████   █████  ███    ██ ██   ██ ███████ ██████       ██ ██
-    ██   ██ ██    ██ ████   ██     ██   ██ ██   ██ ████   ██ ██  ██  ██      ██   ██     ██   ██
-    ██████  ██    ██ ██ ██  ██     ██████  ███████ ██ ██  ██ █████   █████   ██████      ██   ██
-    ██   ██ ██    ██ ██  ██ ██     ██   ██ ██   ██ ██  ██ ██ ██  ██  ██      ██   ██     ██   ██
-    ██   ██  ██████  ██   ████     ██████  ██   ██ ██   ████ ██   ██ ███████ ██   ██      ██ ██
+    ######  ##    ## ###    ##     ######   #####  ###    ## ##   ## ####### ######       ## ##
+    ##   ## ##    ## ####   ##     ##   ## ##   ## ####   ## ##  ##  ##      ##   ##     ##   ##
+    ######  ##    ## ## ##  ##     ######  ####### ## ##  ## #####   #####   ######      ##   ##
+    ##   ## ##    ## ##  ## ##     ##   ## ##   ## ##  ## ## ##  ##  ##      ##   ##     ##   ##
+    ##   ##  ######  ##   ####     ######  ##   ## ##   #### ##   ## ####### ##   ##      ## ##
     */
 
 
@@ -518,12 +517,12 @@ public strictfp class RobotPlayer {
         for (RobotInfo robot : rc.senseNearbyRobots(sensorRadius, enemy)) {
           if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
             flag = (2 << 22) + Game.toCoords(robot.getLocation());
-            System.out.println("SSUUPPEERR BROADCAST!!!");
+            // System.out.println("SSUUPPEERR BROADCAST!!!");
             break outer;
           }
           else if (robot.type == RobotType.SLANDERER) {
             flag = (3 << 22) + Game.toCoords(robot.getLocation());
-            System.out.println("SSUUPPEERR BROADCAST!!!");
+            // System.out.println("SSUUPPEERR BROADCAST!!!");
             break outer;
           }
           else {
@@ -554,8 +553,7 @@ public strictfp class RobotPlayer {
           dir = Game.randomDirection();
           loc = rc.getLocation().add(dir);
           if ((loc.x % 2 == 0) ^ (loc.y % 2 == 0)) {
-            System.out.println(String.valueOf(loc.x) + "x : y" + String.valueOf(loc.y));
-            if (Game.tryMoveAbs(rc, Game.randomDirection())) break;
+            if (Game.tryMoveAbs(rc, dir)) break;
           }
         }
       }
@@ -565,11 +563,11 @@ public strictfp class RobotPlayer {
     }
 
     /*
-    ██████  ██    ██ ███    ██      █████  ██████   ██████ ██   ██ ███████ ██████       ██ ██
-    ██   ██ ██    ██ ████   ██     ██   ██ ██   ██ ██      ██   ██ ██      ██   ██     ██   ██
-    ██████  ██    ██ ██ ██  ██     ███████ ██████  ██      ███████ █████   ██████      ██   ██
-    ██   ██ ██    ██ ██  ██ ██     ██   ██ ██   ██ ██      ██   ██ ██      ██   ██     ██   ██
-    ██   ██  ██████  ██   ████     ██   ██ ██   ██  ██████ ██   ██ ███████ ██   ██      ██ ██
+    ######  ##    ## ###    ##      #####  ######   ###### ##   ## ####### ######       ## ##
+    ##   ## ##    ## ####   ##     ##   ## ##   ## ##      ##   ## ##      ##   ##     ##   ##
+    ######  ##    ## ## ##  ##     ####### ######  ##      ####### #####   ######      ##   ##
+    ##   ## ##    ## ##  ## ##     ##   ## ##   ## ##      ##   ## ##      ##   ##     ##   ##
+    ##   ##  ######  ##   ####     ##   ## ##   ##  ###### ##   ## ####### ##   ##      ## ##
     */
 
     static void runMuckraker() throws GameActionException {
@@ -653,7 +651,7 @@ public strictfp class RobotPlayer {
         // rc.setIndicatorDot(rc.getLocation(), 255, 0, 0);
         // rc.setIndicatorLine(rc.getLocation(), robot.getLocation(), 255, 0, 0);
         flag = (2 << 22) + Game.toCoords(robot.getLocation());
-        System.out.println("SSUUPPEERR BROADCAST!!!");
+        // System.out.println("SSUUPPEERR BROADCAST!!!");
         target = robot.getLocation();
       }
 
@@ -668,11 +666,11 @@ public strictfp class RobotPlayer {
         flag = 3;
         if (robot.type == RobotType.ENLIGHTENMENT_CENTER) {
           flag = (2 << 22) + Game.toCoords(robot.getLocation());
-          System.out.println("SSUUPPEERR BROADCAST!!!");
+          // System.out.println("SSUUPPEERR BROADCAST!!!");
         }
         else if (robot.type == RobotType.SLANDERER) {
           flag = (3 << 22) + Game.toCoords(robot.getLocation());
-          System.out.println("SSUUPPEERR BROADCAST!!!");
+          // System.out.println("SSUUPPEERR BROADCAST!!!");
           target = robot.getLocation();
           Game.tryMove(rc, rc.getLocation().directionTo(robot.getLocation()));
         }

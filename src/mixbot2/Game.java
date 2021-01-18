@@ -107,16 +107,16 @@ public strictfp class Game {
 
     static boolean tryMove(RobotController rc, Direction dir) throws GameActionException {
         if (dir == null) {return false;}
-        if (rc.canMove(dir)) {
+        if (rc.canMove(dir) && rc.sensePassability(rc.getLocation().add(dir)) > 0.15) {
             rc.move(dir);
             return true;
         }
         Direction[] dir2= directionInterval(dir);
-        if (rc.canMove(dir2[0])) {
+        if (rc.canMove(dir2[0]) && rc.sensePassability(rc.getLocation().add(dir2[0])) > 0.1) {
             rc.move(dir2[0]);
             return true;
         }
-        if (rc.canMove(dir2[2])) {
+        if (rc.canMove(dir2[2]) && rc.sensePassability(rc.getLocation().add(dir2[2])) > 0.05) {
             rc.move(dir2[2]);
             return true;
         }
