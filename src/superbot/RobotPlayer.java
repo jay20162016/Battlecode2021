@@ -85,7 +85,7 @@ public strictfp class RobotPlayer {
         bidinfl = Math.min(bidinfl, rc.getInfluence() / 7);
       }
       else {
-        bidinfl = bidinfl - (int) Game.random() * 3;
+        bidinfl = bidinfl - 2;
         bidinfl = Math.max(1, bidinfl);
         bidinfl = Math.min(bidinfl, rc.getInfluence() / 7);
       }
@@ -107,18 +107,14 @@ public strictfp class RobotPlayer {
     static int flag;
 
     static Set<Integer> ids = new LinkedHashSet<Integer>();
-    static ArrayList<Integer> idsarr = new ArrayList<Integer>();
+    static int[] idsarr = new int[1250];
+    static int idsptr = 0;
     static Direction nextdir = Game.randomDirection();
     static int influence = 130;
     static RobotType toBuild = RobotType.SLANDERER;
     static void runEnlightenmentCenter() throws GameActionException {
+      doBid();
       flag = 0;
-      while (!rc.onTheMap(rc.getLocation().add(nextdir))) {
-        nextdir = Game.randomDirection();
-      }
-      while (rc.canSenseLocation(rc.getLocation().add(nextdir)) && rc.isLocationOccupied(rc.getLocation().add(nextdir)) || Game.random() < 0.05) {
-        nextdir = Game.randomDirection();
-      }
 
       // if ((influence < 0 || influence > rc.getInfluence()) && turnCount > 2) {
       //   System.out.println("ErROR: ERRoR: eRROR: invluencez");
@@ -128,56 +124,69 @@ public strictfp class RobotPlayer {
       //   rc.resign();
       // }
 
-      if (rc.getRoundNum() == 1) {
-        toBuild = RobotType.SLANDERER;
-        influence = 130;
-      }
-      else if (rc.getRoundNum() < 15 && rc.getRoundNum() > 10) {
-        toBuild = RobotType.SLANDERER;
-        influence = 42;
-      }
-      else if (rc.getRoundNum() < 22) {
-        toBuild = RobotType.POLITICIAN;
-        influence = 1;
-      }
-      else if (Math.abs(rc.getInfluence()-200) < 70) {
-        toBuild = RobotType.SLANDERER;
-        influence = (int)Math.floor((rc.getInfluence() - 10)/20)*20+1;
-      }
-      else if (Math.abs(rc.getInfluence()-500) < 200) {
-        toBuild = RobotType.SLANDERER;
-        influence = Math.min(rc.getInfluence() - 10, 949);
-      }
-      else if (rc.getInfluence() > 949 && Game.random() < 0.3) {
-        toBuild = RobotType.SLANDERER;
-        influence = 949;
-      }
-      else if (rc.getInfluence() < 60) {
-        toBuild = RobotType.SLANDERER;
-        influence = (int)Math.floor((rc.getInfluence() - 10)/20)*20+1;
-      }
-      else if (Game.random() < 0.5 || rc.getInfluence() < 25) {
-        toBuild = RobotType.MUCKRAKER;
-        influence = (int)Game.random() * rc.getInfluence() / 3;
-        if (influence < 1) {
+      outer : {
+        if (rc.getRoundNum() == 1) {
+          toBuild = RobotType.SLANDERER;
+          influence = 130;
+        }
+        else if (rc.getRoundNum() < 15 && rc.getRoundNum() > 10) {
+          toBuild = RobotType.SLANDERER;
+          influence = 42;
+        }
+        else if (rc.getRoundNum() < 22) {
+          toBuild = RobotType.POLITICIAN;
           influence = 1;
+          break outer;
         }
-      }
-      else {
-        toBuild = RobotType.POLITICIAN;
-        influence = rc.getInfluence() - 10;
-      }
-
-      if (toBuild == RobotType.SLANDERER) {
-        if (rc.getInfluence() < influence) {
-          influence = rc.getInfluence() - 10;
+        else if (Math.abs(rc.getInfluence()-200) < 70) {
+          toBuild = RobotType.SLANDERER;
+          influence = (int)Math.floor((rc.getInfluence() - 10)/20)*20+1;
         }
-        else if (influence < 21) {
-          influence = 21;
+        else if (Math.abs(rc.getInfluence()-500) < 200) {
+          toBuild = RobotType.SLANDERER;
+          influence = Math.min(rc.getInfluence() - 10, 949);
         }
-        else if (rc.getInfluence() < influence) {
+        else if (rc.getInfluence() > 949 && Game.random() < 0.3) {
+          toBuild = RobotType.SLANDERER;
+          influence = 949;
+        }
+        else if (rc.getInfluence() < 60) {
+          toBuild = RobotType.SLANDERER;
+          influence = (int)Math.floor((rc.getInfluence() - 10)/20)*20+1;
+        }
+        else if (Game.random() < 0.5 || rc.getInfluence() < 25) {
           toBuild = RobotType.MUCKRAKER;
-          influence = 1;
+          influence = (int) (Game.random() * rc.getInfluence() / 3);
+          if (influence < 1) {
+            influence = 1;
+          }
+          break outer;
+        }
+        else {
+          toBuild = RobotType.POLITICIAN;
+          influence = (int) (Game.random() * Game.random() * rc.getInfluence() - 10);
+          if (Game.random() < 0.2) {
+            if (rc.getInfluence() < 200 || Game.random() < 0.4) {
+              influence = 21;
+            }
+            else {
+              influence = 41;
+            }
+          }
+          break outer;
+        }
+
+        if (toBuild == RobotType.SLANDERER) {
+          if (rc.getInfluence() < influence) {
+            influence = rc.getInfluence() - 10;
+          }
+          else if (influence < 21) {
+            influence = 21;
+          }
+          else if (rc.getInfluence() < influence) {
+            toBuild = RobotType.MUCKRAKER;
+            influence = 1;
+          }
         }
       }
 
@@ -185,7 +194,8 @@ public strictfp class RobotPlayer {
       while (!rc.onTheMap(rc.getLocation().add(nextdir))) {
         nextdir = Game.randomDirection();
       }
-      while (rc.canSenseLocation(rc.getLocation().add(nextdir)) && rc.isLocationOccupied(rc.getLocation().add(nextdir)) || Game.random() < 0.05) {
+      while (rc.canSenseLocation(rc.getLocation().add(nextdir)) && rc.isLocationOccupied(rc.getLocation().add(nextdir))
+              && Game.random() < 0.9) {
         nextdir = Game.randomDirection();
       }
 
@@ -198,12 +208,12 @@ public strictfp class RobotPlayer {
         influence = 1;
       }
       if (influence > 2000) {
-        influence = (int) (Math.abs(Game.random() + Game.random() - 1) * 1200);
+        influence = (int) (Game.random() * Game.random() * 1200);
       }
 
-      System.out.println(toBuild);
-      System.out.println(influence);
-      System.out.println(nextdir);
+      // System.out.println(toBuild);
+      // System.out.println(influence);
+      // System.out.println(nextdir);
 
       Team me = rc.getTeam();
       Team enemy = me.opponent();
@@ -213,19 +223,21 @@ public strictfp class RobotPlayer {
       RobotInfo[] robots = rc.senseNearbyRobots(sensorRadius, me);
 
       for (RobotInfo robot : robots) {
+        int id = robot.getID();
         if (robot.type != RobotType.ENLIGHTENMENT_CENTER) {
-          if (ids.add(robot.getID())) {
-            idsarr.add(robot.getID());
+          if (ids.add(id)) {
+            // idsarr.add(robot.getID());
+            idsarr[idsptr++] = id;
+            // idsptr += 1;
           }
         }
       }
 
-      int id;
       int oflag;
 
-      for (int i = idsarr.size() - 1; i>=0; i--){
-        id = idsarr.get(i);
-        if (rc.canGetFlag(id)) {
+      for (int i = 0; i < idsptr; i++){
+        int id = idsarr[i];
+        if (id != 0 && rc.canGetFlag(id)) {
           oflag = rc.getFlag(id);
           if ((oflag >> 22) == 2 || (oflag >> 22) == 3) {
             if (oflag >> 22 == 2) {
@@ -268,10 +280,10 @@ public strictfp class RobotPlayer {
             toBuild = RobotType.MUCKRAKER;
             influence = 1;
           }
+          break;
       }
 
       Game.tryBuild(rc, toBuild, nextdir, influence);
-      doBid();
 
       if (rc.canSetFlag(flag)) {
         rc.setFlag(flag);
@@ -332,9 +344,10 @@ public strictfp class RobotPlayer {
                     rc.getRoundNum() > 1450 || // we're close to the end
                     (rc.getEmpowerFactor(me, 0) > 1.2 && rc.getEmpowerFactor(me, 0) * rc.getConviction() > 30) // buff
                     ) {
-
-                    rc.empower(rc.getLocation().distanceSquaredTo(robot.location));
-                    break outer;
+                    if (!(robot.type == RobotType.MUCKRAKER && (rc.getInfluence() - 10 > robot.getInfluence() * 20))) {
+                      rc.empower(rc.getLocation().distanceSquaredTo(robot.location));
+                      break outer;
+                    }
                 }
             }
             for (RobotInfo robot : rc.senseNearbyRobots(actionRadius, Team.NEUTRAL)) {
